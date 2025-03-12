@@ -1,4 +1,4 @@
-import streamlit as st 
+import streamlit as st  
 import pandas as pd
 import numpy as np
 import pickle
@@ -16,15 +16,15 @@ st.title("Employee Attrition Prediction App")
 st.write("Enter the employee details below to predict whether the employee will leave the company.")
 
 # Input fields
-sex = st.selectbox("sex", options=["M", "F"])
+sex = st.selectbox("Sex", options=["M", "F"])
 
 last_performance_rating = st.selectbox(
-    "last_performance_rating", 
+    "Last Performance Rating", 
     options=["A", "B", "C", "PIP", "S"]
 )
 
 job_title = st.selectbox(
-    "job_title", 
+    "Job Title", 
     options=[
         "Senior Engineer", "Staff", "Assistant Engineer", 
         "Technique Leader", "Engineer", "Senior Staff", "Manager"
@@ -32,7 +32,7 @@ job_title = st.selectbox(
 )
 
 dept_name = st.selectbox(
-    "dept_name", 
+    "Department", 
     options=[
         "Development", "Sales", "Production", "Human Resources", 
         "Research", "Quality Management", "Customer Service", 
@@ -40,10 +40,10 @@ dept_name = st.selectbox(
     ]
 )
 
-no_of_projects = st.number_input("no_of_projects", min_value=1, max_value=10, value=3)
-salary = st.number_input("salary", min_value=40000, max_value=130000, value=50000)
+no_of_projects = st.number_input("Number of Projects", min_value=1, max_value=10, value=3)
+salary = st.number_input("Salary", min_value=40000, max_value=130000, value=50000)
 
-# Encode categorical data (for model input)
+# ✅ Encode categorical data (for model input)
 sex_encoded = 1 if sex == "M" else 0
 last_performance_rating_map = {"A": 0, "B": 1, "C": 2, "PIP": 3, "S": 4}
 last_performance_rating_encoded = last_performance_rating_map[last_performance_rating]
@@ -61,7 +61,7 @@ dept_name_map = {
 }
 dept_name_encoded = dept_name_map[dept_name]
 
-# Prepare the input data
+# ✅ Prepare the input data (Reorder to match training order)
 input_data = pd.DataFrame(
     {
         "sex": [sex_encoded],
@@ -73,10 +73,13 @@ input_data = pd.DataFrame(
     }
 )
 
-# Scale numeric features
+# ✅ Match the order of features used during model training
+input_data = input_data[['sex', 'last_performance_rating', 'job_title', 'dept_name', 'no_of_projects', 'salary']]
+
+# ✅ Scale numeric features
 input_data[["no_of_projects", "salary"]] = scaler.transform(input_data[["no_of_projects", "salary"]])
 
-# Prediction
+# ✅ Prediction
 if st.button("Predict"):
     prediction = model.predict(input_data)[0]
     prediction_proba = model.predict_proba(input_data)[:, 1][0]
@@ -86,10 +89,10 @@ if st.button("Predict"):
     else:
         st.success(f"✅ The employee is likely to stay with the company (Confidence: {prediction_proba:.2f})")
 
-# Feature importance plot
+# ✅ Feature importance plot
 if st.checkbox("Show Feature Importance"):
     feature_importance = model.feature_importances_
-    feature_names = input_data.columns
+    feature_names = ['sex', 'last_performance_rating', 'job_title', 'dept_name', 'no_of_projects', 'salary']
     
     st.write("### Feature Importance")
     importance_df = pd.DataFrame({"Feature": feature_names, "Importance": feature_importance})
@@ -97,7 +100,7 @@ if st.checkbox("Show Feature Importance"):
     
     st.bar_chart(importance_df.set_index("Feature"))
 
-# Prediction probability plot
+# ✅ Prediction probability plot
 if st.checkbox("Show Prediction Probability"):
     st.write("### Prediction Probability")
     st.write(f"Probability of Staying: {(1 - prediction_proba):.2f}")
