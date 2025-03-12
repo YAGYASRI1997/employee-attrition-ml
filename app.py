@@ -81,7 +81,7 @@ input_data[["no_of_projects", "salary"]] = scaler.transform(input_data[["no_of_p
 
 # ✅ Prediction
 if st.button("Predict"):
-    prediction = model.predict(input_data)[0]
+    prediction = model.predict(input_data, validate_features=False)[0]
     prediction_proba = model.predict_proba(input_data)[:, 1][0]
     
     if prediction == 1:
