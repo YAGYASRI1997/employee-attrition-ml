@@ -1,4 +1,4 @@
-import streamlit as st  
+import streamlit as st   
 import pandas as pd
 import numpy as np
 import pickle
@@ -61,7 +61,7 @@ dept_name_map = {
 }
 dept_name_encoded = dept_name_map[dept_name]
 
-# ✅ Prepare the input data (Reorder to match training order)
+# ✅ Prepare the input data
 input_data = pd.DataFrame(
     {
         "sex": [sex_encoded],
@@ -81,7 +81,7 @@ input_data[["no_of_projects", "salary"]] = scaler.transform(input_data[["no_of_p
 
 # ✅ Prediction
 if st.button("Predict"):
-    prediction = model.predict(input_data, validate_features=False)[0]
+    prediction = model.predict(input_data)[0]  # Removed validate_features=False
     prediction_proba = model.predict_proba(input_data)[:, 1][0]
     
     if prediction == 1:
