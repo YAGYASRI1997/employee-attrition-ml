@@ -3,6 +3,8 @@ import pandas as pd
 import numpy as np
 import pickle
 
+st.set_option("server.fileWatcherType", "none")
+
 # Load the model and scaler
 with open('model_xgb.pkl', 'rb') as file:
     model = pickle.load(file)
