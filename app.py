@@ -1,4 +1,4 @@
-import streamlit as st
+import streamlit as st 
 import pandas as pd
 import numpy as np
 import pickle
@@ -15,20 +15,58 @@ st.title("Employee Attrition Prediction App")
 st.write("Enter the employee details below to predict whether the employee will leave the company.")
 
 # Input fields
-sex = st.selectbox("Sex", options=[0, 1], format_func=lambda x: "Male" if x == 1 else "Female")
-last_performance_rating = st.selectbox("Last Performance Rating", options=[0, 1, 2, 3])
-job_title = st.selectbox("Job Title", options=[0, 1, 2, 3, 4, 5, 6])
-dept_name = st.selectbox("Department", options=[0, 1, 2, 3, 4, 5, 6])
-no_of_projects = st.number_input("Number of Projects", min_value=1, max_value=20, value=3)
-salary = st.number_input("Salary", min_value=1000, max_value=100000, value=50000)
+sex = st.selectbox("Sex", options=["M", "F"])
+
+last_performance_rating = st.selectbox(
+    "Last Performance Rating", 
+    options=["A", "B", "C", "PIP", "S"]
+)
+
+job_title = st.selectbox(
+    "Job Title", 
+    options=[
+        "Senior Engineer", "Staff", "Assistant Engineer", 
+        "Technique Leader", "Engineer", "Senior Staff", "Manager"
+    ]
+)
+
+dept_name = st.selectbox(
+    "Department", 
+    options=[
+        "Development", "Sales", "Production", "Human Resources", 
+        "Research", "Quality Management", "Customer Service", 
+        "Marketing", "Finance"
+    ]
+)
+
+no_of_projects = st.number_input("Number of Projects", min_value=1, max_value=10, value=3)
+salary = st.number_input("Salary", min_value=40000, max_value=130000, value=50000)
+
+# Encode categorical data (for model input)
+sex_encoded = 1 if sex == "M" else 0
+last_performance_rating_map = {"A": 0, "B": 1, "C": 2, "PIP": 3, "S": 4}
+last_performance_rating_encoded = last_performance_rating_map[last_performance_rating]
+
+job_title_map = {
+    "Senior Engineer": 0, "Staff": 1, "Assistant Engineer": 2,
+    "Technique Leader": 3, "Engineer": 4, "Senior Staff": 5, "Manager": 6
+}
+job_title_encoded = job_title_map[job_title]
+
+dept_name_map = {
+    "Development": 0, "Sales": 1, "Production": 2, "Human Resources": 3,
+    "Research": 4, "Quality Management": 5, "Customer Service": 6,
+    "Marketing": 7, "Finance": 8
+}
+dept_name_encoded = dept_name_map[dept_name]
 
 # Prepare the input data
 input_data = pd.DataFrame(
     {
-        "sex": [sex],
-        "last_performance_rating": [last_performance_rating],
-        "job_title": [job_title],
-        "dept_name": [dept_name],
+        "sex": [sex_encoded],
+        "last_performance_rating": [last_performance_rating_encoded],
+        "job_title": [job_title_encoded],
+        "dept_name": [dept_name_encoded],
         "no_of_projects": [no_of_projects],
         "salary": [salary],
     }
