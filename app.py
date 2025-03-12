@@ -16,15 +16,15 @@ st.title("Employee Attrition Prediction App")
 st.write("Enter the employee details below to predict whether the employee will leave the company.")
 
 # Input fields
-sex = st.selectbox("Sex", options=["M", "F"])
+sex = st.selectbox("sex", options=["M", "F"])
 
 last_performance_rating = st.selectbox(
-    "Last Performance Rating", 
+    "last_performance_rating", 
     options=["A", "B", "C", "PIP", "S"]
 )
 
 job_title = st.selectbox(
-    "Job Title", 
+    "job_title", 
     options=[
         "Senior Engineer", "Staff", "Assistant Engineer", 
         "Technique Leader", "Engineer", "Senior Staff", "Manager"
@@ -32,7 +32,7 @@ job_title = st.selectbox(
 )
 
 dept_name = st.selectbox(
-    "Department", 
+    "dept_name", 
     options=[
         "Development", "Sales", "Production", "Human Resources", 
         "Research", "Quality Management", "Customer Service", 
@@ -40,8 +40,8 @@ dept_name = st.selectbox(
     ]
 )
 
-no_of_projects = st.number_input("Number of Projects", min_value=1, max_value=10, value=3)
-salary = st.number_input("Salary", min_value=40000, max_value=130000, value=50000)
+no_of_projects = st.number_input("no_of_projects", min_value=1, max_value=10, value=3)
+salary = st.number_input("salary", min_value=40000, max_value=130000, value=50000)
 
 # Encode categorical data (for model input)
 sex_encoded = 1 if sex == "M" else 0
